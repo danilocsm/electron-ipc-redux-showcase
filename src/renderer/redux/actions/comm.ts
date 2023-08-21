@@ -20,24 +20,13 @@ export const portOpened = () => ({ type: COMM_ACTIONS.PORT_OPENED });
 export const portClosed = () => ({ type: COMM_ACTIONS.PORT_CLOSED });
 
 export const sendCommand = () => {
-  return (dispatch: any) => {
-    window.serialComm
-      .open()
-      .then(() => {
-        dispatch(portOpened());
-        dispatch(commandStarted());
-        window.serialComm
-          .send()
-          .then((response) => {
-            console.log(response);
-
-            dispatch(commandFinished(response));
-            dispatch(portClosed());
-          })
-          .catch(() => {});
-      })
-      .catch(() => {
-        dispatch(portClosed());
-      });
+  return async (dispatch: any) => {
+    await window.serialComm.open();
+    dispatch(portOpened());
+    dispatch(commandStarted());
+    const response = await window.serialComm.send();
+    dispatch(commandFinished(response));
+    dispatch(portClosed());
+    return response;
   };
 };

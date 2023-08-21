@@ -32,8 +32,10 @@ const mapStateToProps = ({ comm }: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onClick: () => {
-      dispatch(sendCommand());
+    onClick: async () => {
+      const response = await dispatch(sendCommand());
+
+      console.log(response);
     },
   };
 };
