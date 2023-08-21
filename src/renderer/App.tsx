@@ -1,19 +1,17 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import icon from '../../assets/icon.svg';
 import './App.css';
 import { RootState } from './redux/store';
-import { openPort, sendCommand } from './redux/actions/comm';
-import { useAppDispatch } from './redux/hooks';
+import { sendCommand } from './redux/actions/comm';
+import { CommState } from './redux/reducers/commReducer';
 
 function Hello() {
-  const comm = useSelector((state: RootState) => state.comm);
-  const dispatch = useAppDispatch();
+  const comm = useSelector((state: RootState) => state.comm) as CommState;
+  const dispatch = useDispatch();
 
   const onClick = async () => {
-    await dispatch(openPort());
-    const commandResult = await dispatch(sendCommand());
-    console.log(commandResult);
+    dispatch(sendCommand());
   };
 
   return (
